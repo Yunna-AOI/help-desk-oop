@@ -19,13 +19,13 @@ public class Main {
         );
 
         List<User> users = new ArrayList<>();
-        users.add(new Customer(1, "Анна", "anna@mail.ru", false));
-        users.add(new SupportAgent(2, "Сергей", "sergey@helpdesk.ru", true));
-        users.add(new Administrator(3, "Олег", "admin@helpdesk.ru", true));
+        users.add(new Customer(1, "Анна", "anna@mail.ru"));
+        users.add(new SupportAgent(2, "Сергей", "sergey@helpdesk.ru"));
+        users.add(new Administrator(3, "Олег", "admin@helpdesk.ru"));
 
         TicketService ticketService = new TicketService(notificationService);
 
-        ticketService.progressIn(ticket);
-        ticketService.closeIt(ticket);
+        ticketService.progressIn(users.getLast(), ticket);
+        ticketService.closeIt(users.getLast(), ticket);
     }
 }

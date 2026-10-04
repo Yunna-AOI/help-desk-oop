@@ -1,9 +1,9 @@
 package model;
 
 public class Customer extends User {
-    public Customer(long id, String name, String mail, Boolean boolAdmin) {
+    public Customer(long id, String name, String mail) {
 
-        super(id, name, mail, boolAdmin);
+        super(id, name, mail);
     }
 
     @Override

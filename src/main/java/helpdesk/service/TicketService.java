@@ -1,5 +1,7 @@
 package service;
 
+import model.Administrator;
+import model.SupportAgent;
 import model.Ticket;
 import model.User;
 
@@ -18,23 +20,35 @@ public class TicketService {
         notificationService.send("Заявка N" + ticket.getId() +": " + ticket.getDescription() + " | " + ticket.getStatus());
     }
 
-    public void startTicket(Ticket ticket) {
-        ticket.startProcessing();
-        notificationService.send(ticket.toString());
+    public void startTicket(User user, Ticket ticket) throws IllegalAccessException {
+        if (!(user instanceof SupportAgent)) {
+            throw new SecurityException("Only Support agent has access to this");
+        }
+            ticket.startProcessing();
+            notificationService.send(ticket.toString());
     }
 
-    public void progressIn(Ticket ticket) {
-        ticket.resolve();
-        notificationService.send(ticket.toString());
+    public void progressIn(User user, Ticket ticket) {
+        if (!(user instanceof SupportAgent)) {
+            throw new SecurityException("Only Support agent has access to this");
+        }
+            ticket.resolve();
+            notificationService.send(ticket.toString());
     }
 
-    public void closeIt(Ticket ticket) {
-        ticket.close();
-        notificationService.send(ticket.toString());
+    public void closeIt(User user, Ticket ticket) {
+        if (!(user instanceof SupportAgent)) {
+            throw new SecurityException("Only Support agent has access to this");
+        }
+            ticket.close();
+            notificationService.send(ticket.toString());
     }
 
-    public void cancelIt(Ticket ticket) {
-        ticket.cancel();
-        notificationService.send(ticket.toString());
+    public void cancelIt(User user, Ticket ticket) {
+        if (!(user instanceof SupportAgent)) {
+            throw new SecurityException("Only Support agent has access to this");
+        }
+            ticket.cancel();
+            notificationService.send(ticket.toString());
     }
 }
