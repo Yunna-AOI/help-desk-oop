@@ -20,16 +20,21 @@ public class TicketService {
 
     public void startTicket(Ticket ticket) {
         ticket.startProcessing();
-        notificationService.send("Заявка N" + ticket.getId() + " принята в работу\nСтатус " + ticket.getStatus());
+        notificationService.send(ticket.toString());
     }
 
     public void progressIn(Ticket ticket) {
         ticket.resolve();
-        notificationService.send("Заявка N" + ticket.getId() + " найдено решение\nСтатус " + ticket.getStatus());
+        notificationService.send(ticket.toString());
     }
 
     public void closeIt(Ticket ticket) {
         ticket.close();
-        notificationService.send("Заявка N" + ticket.getId() + " ззыкрыта\nСтатус " + ticket.getStatus());
+        notificationService.send(ticket.toString());
+    }
+
+    public void cancelIt(Ticket ticket) {
+        ticket.cancel();
+        notificationService.send(ticket.toString());
     }
 }

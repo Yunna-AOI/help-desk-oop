@@ -10,10 +10,12 @@ public class Main {
     public static void main(String[] args) {
         System.out.println(" === HELP DESK === ");
         NotificationService notificationService = new ConsoleNotificationService();
+
         Ticket ticket = new Ticket(
                 1,
                 "Internet not working",
-                "After reboot pc connection lost"
+                "After reboot pc connection lost",
+                TicketPriority.HIGH
         );
 
         List<User> users = new ArrayList<>();
