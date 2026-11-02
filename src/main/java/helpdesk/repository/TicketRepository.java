@@ -8,9 +8,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TicketRepository {
-    private  final Map<Long, Ticket> tickets = new HashMap<>();
+    private final Map<Long, Ticket> tickets = new HashMap<>();
+
 
     public void add(Ticket ticket) {
+
         tickets.put(ticket.getId(), ticket);
     }
 
@@ -29,6 +31,14 @@ public class TicketRepository {
                 .filter(ticket->status == null || ticket.getStatus() == status )
                 .filter(ticket->priority == null || ticket.getPriority() == priority)
                 .collect(Collectors.toList());
+    }
+
+    public Map<TicketStatus, Integer> getStaicstics() {
+        Map<TicketStatus, Integer> statistic = new HashMap<>();
+        for (TicketStatus status: TicketStatus.values()) {
+            statistic.put(status, findByInterface(status, null).size());
+        }
+        return statistic;
     }
 
     // I don't check this block, but I believe he can work :)

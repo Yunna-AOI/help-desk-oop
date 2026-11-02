@@ -25,7 +25,12 @@ public class Main {
 
         TicketService ticketService = new TicketService(notificationService);
 
-        ticketService.progressIn(users.getLast(), ticket);
-        ticketService.closeIt(users.getLast(), ticket);
+        ticketService.startTicket(users.get(1), ticket);
+        ticketService.progressIn(users.get(1), ticket);
+        ticketService.closeIt(users.get(1), ticket);
+
+        for (TicketChanges tch : ticket.getStatusHistory()) {
+            System.out.println(String.format("Old change: %s \nNew status: %s \nChange at: %s", tch.getOldStatus(), tch.getNewStatus(), tch.getChangedAt()));
+        }
     }
 }

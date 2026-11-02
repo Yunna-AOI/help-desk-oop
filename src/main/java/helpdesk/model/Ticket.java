@@ -1,8 +1,9 @@
 package model;
 
-import repository.TicketRepository;
-
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ticket {
     private long id;
@@ -11,6 +12,8 @@ public class Ticket {
     private TicketStatus status;
     private TicketPriority priority;
     private LocalDateTime createAt;
+    private SlaPolicy policy;
+    private List<TicketChanges> statusHistory = new ArrayList<>();
 
     public long getId() { return id; }
     public String getTitle() { return title; }
@@ -18,7 +21,8 @@ public class Ticket {
     public TicketStatus getStatus() { return status; }
     public TicketPriority getPriority() { return priority; }
     public LocalDateTime getCreateAt() { return createAt; }
-
+    public LocalDateTime getDeadline() { return createAt.plusMinutes(policy.getResolutionTime().toMinutes()); }
+    public List<TicketChanges> getStatusHistory() { return List.copyOf(statusHistory); }
 
     public Ticket(long id, String title, String description, TicketPriority priority)  {
         if (description != null && description.isEmpty()) {
@@ -30,6 +34,7 @@ public class Ticket {
         this.status = TicketStatus.NEW;
         this.priority = priority;
         this.createAt = LocalDateTime.now();
+        this.policy = SlaPolicies.forPolicy(priority);
     }
 
     public void startProcessing() {
@@ -38,6 +43,7 @@ public class Ticket {
 //            return;
             throw new IllegalStateException("Error: Your problem has solved or in progress");
         }
+        this.statusHistory.add(new TicketChanges(status, TicketStatus.IN_PROGRESS));
         this.status = TicketStatus.IN_PROGRESS;
     }
 
@@ -47,6 +53,7 @@ public class Ticket {
 //            return;
             throw new IllegalStateException("Error: solve problem can only progress in");
         }
+        this.statusHistory.add(new TicketChanges(status, TicketStatus.RESOLVED));
         this.status = TicketStatus.RESOLVED;
     }
 
@@ -56,6 +63,7 @@ public class Ticket {
 //            return;
             throw new IllegalStateException("Error: close problem need after solving");
         }
+        this.statusHistory.add(new TicketChanges(status, TicketStatus.CLOSED));
         this.status = TicketStatus.CLOSED;
     }
 // Добавил функцию отмены, если задача уже закрыта, то ее физически нельзя отменить,
@@ -66,6 +74,7 @@ public class Ticket {
 //            return;
             throw new IllegalStateException("Error: issue cannot canceled after close");
         }
+        this.statusHistory.add(new TicketChanges(status, TicketStatus.CANCELED));
         this.status = TicketStatus.CANCELED;
     }
 

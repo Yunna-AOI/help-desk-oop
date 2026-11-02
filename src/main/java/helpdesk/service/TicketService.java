@@ -20,35 +20,35 @@ public class TicketService {
         notificationService.send("Заявка N" + ticket.getId() +": " + ticket.getDescription() + " | " + ticket.getStatus());
     }
 
-    public void startTicket(User user, Ticket ticket) throws IllegalAccessException {
+    public void startTicket(User user, Ticket ticket) {
         if (!(user instanceof SupportAgent)) {
             throw new SecurityException("Only Support agent has access to this");
         }
-            ticket.startProcessing();
-            notificationService.send(ticket.toString());
+        ticket.startProcessing();
+        notificationService.send(ticket.toString());
     }
 
     public void progressIn(User user, Ticket ticket) {
         if (!(user instanceof SupportAgent)) {
             throw new SecurityException("Only Support agent has access to this");
         }
-            ticket.resolve();
-            notificationService.send(ticket.toString());
+        ticket.resolve();
+        notificationService.send(ticket.toString());
     }
 
     public void closeIt(User user, Ticket ticket) {
         if (!(user instanceof SupportAgent)) {
             throw new SecurityException("Only Support agent has access to this");
         }
-            ticket.close();
-            notificationService.send(ticket.toString());
+        ticket.close();
+        notificationService.send(ticket.toString());
     }
 
     public void cancelIt(User user, Ticket ticket) {
         if (!(user instanceof SupportAgent)) {
             throw new SecurityException("Only Support agent has access to this");
         }
-            ticket.cancel();
-            notificationService.send(ticket.toString());
+        ticket.cancel();
+        notificationService.send(ticket.toString());
     }
 }
